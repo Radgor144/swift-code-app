@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import pl.radgor144.persistence.SwiftCodeEntity;
 import pl.radgor144.persistence.SwiftCodeRepository;
 
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -37,9 +38,8 @@ public class SwiftCodeCsvImporter {
         this.batchSize = batchSize;
     }
 
-    void importSwiftCodes() throws Exception {
-        Path pathToSwiftCodesFile = getPathToSwiftCodesFile();
-        try (Reader reader = Files.newBufferedReader(pathToSwiftCodesFile)) {
+    void importSwiftCodes() {
+        try (Reader reader = getPathToSwiftCodesFile()) {
             CsvToBean<SwiftCodeLine> swiftCodeLines = new CsvToBeanBuilder<SwiftCodeLine>(reader)
                     .withType(SwiftCodeLine.class)
                     .build();
@@ -49,6 +49,7 @@ public class SwiftCodeCsvImporter {
                 swiftCodeEntities.add(swiftCodeEntity);
                 if (swiftCodeEntities.size() == batchSize) {
                     swiftCodeRepository.saveAll(swiftCodeEntities);
+                    swiftCodeEntities.clear();
                 }
             }
             if (!swiftCodeEntities.isEmpty()) {
@@ -59,9 +60,12 @@ public class SwiftCodeCsvImporter {
         }
     }
 
-    private Path getPathToSwiftCodesFile() throws URISyntaxException {
-        URL urlToSwiftCodesFile = getClass().getClassLoader().getResource(swiftCodePath);
-        return Paths.get(Objects.requireNonNull(urlToSwiftCodesFile).toURI());
+    private Reader getPathToSwiftCodesFile() {
+        InputStreamReader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(swiftCodePath));
+        if (reader == null) {
+            log.error("CSV file not found in the classpath: {}", swiftCodePath);
+        }
+        return reader;
     }
 
     private static SwiftCodeEntity mapToSwiftCodeEntity(SwiftCodeLine swiftCodeLine) {
