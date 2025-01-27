@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mydatabase
+    username: myuser
+    password: mypassword
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          batchSize: 50
+        orderInserts: true
+        format_sql: true
+        generateStatistics: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: 8080
+
+swiftCodePath: "csv/Interns_2025_SWIFT_CODES - Sheet1.csv"
+batchSize: 50
