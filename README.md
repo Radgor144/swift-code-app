@@ -46,7 +46,7 @@ The application processes data from a provided file, parses it, and stores it in
 - **PostgreSQL** - The relational database used to store and manage SWIFT code data.
 
 ### Documentation:
-- **swagger** - Auto-generate API documentation for better interactivity, comprehension and testing of API features.
+- **OpenApi** - Auto-generate API documentation for better interactivity, comprehension and testing of API features.
 
 ### Tests:
 - **JUnit** - Unit testing was implemented to check the correctness of individual code fragments in isolation, enabling faster error detection and facilitating refactoring.

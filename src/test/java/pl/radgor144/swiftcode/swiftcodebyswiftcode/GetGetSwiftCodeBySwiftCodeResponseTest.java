@@ -1,6 +1,10 @@
 package pl.radgor144.swiftcode.swiftcodebyswiftcode;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,18 +18,52 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static pl.radgor144.swiftcode.swiftcodebyswiftcode.GetSwiftCodeBySwiftCodeService.removeSuffixIfNecessary;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class GetGetSwiftCodeBySwiftCodeResponseTest {
 
-    @MockBean
+    @Mock
     private SwiftCodeRepository swiftCodeRepository;
 
-    @Autowired
+    @InjectMocks
     private GetSwiftCodeBySwiftCodeService getSwiftCodeBySwiftCodeService;
 
-    private static final SwiftCodeEntity branchWithOutHq = new SwiftCodeEntity(
+    @Test
+    public void shouldReturnSwiftCodeWithoutHqResponse() {
+        // GIVEN
+        String swiftCode = "KDPWPLPAASD";
+        GetSwiftCodeBySwiftCodeResponse expectedResponse = createExpectedResponse(branchWithoutHq, null);
+
+        // WHEN
+        when(swiftCodeRepository.findBySwiftCode(swiftCode)).thenReturn(Optional.of(branchWithoutHq));
+
+        // THEN
+        var response = getSwiftCodeBySwiftCodeService.getGetSwiftCodeBySwiftCodeResponse(swiftCode);
+        verify(swiftCodeRepository).findBySwiftCode(swiftCode);
+        assertEquals(expectedResponse, response);
+    }
+
+    @Test
+    public void shouldReturnSwiftCodeWithHqResponse() {
+        // GIVEN
+        String swiftCode = "AIZKLV22XXX";
+        String swiftCodeWithoutSuffix = "AIZKLV22";
+        List<BranchResponse> branchResponses = branches.stream().map(this::mapToBranch).toList();
+        GetSwiftCodeBySwiftCodeResponse expectedResponse = createExpectedResponse(branchWithHq, branchResponses);
+
+        // WHEN
+        when(swiftCodeRepository.findBySwiftCode(swiftCode)).thenReturn(Optional.of(branchWithHq));
+        when(swiftCodeRepository.findAllBranchesBySwiftCode(swiftCodeWithoutSuffix)).thenReturn(branches);
+
+        // THEN
+        var response = getSwiftCodeBySwiftCodeService.getGetSwiftCodeBySwiftCodeResponse(swiftCode);
+
+        verify(swiftCodeRepository).findBySwiftCode(swiftCode);
+        verify(swiftCodeRepository).findAllBranchesBySwiftCode(swiftCodeWithoutSuffix);
+        assertEquals(expectedResponse, response);
+    }
+
+    private static final SwiftCodeEntity branchWithoutHq = new SwiftCodeEntity(
             UUID.randomUUID(),
             "Branch Street 2",
             "Test Bank",
@@ -78,40 +116,5 @@ public class GetGetSwiftCodeBySwiftCodeResponseTest {
                 swiftCodeEntity.isHeadquarter(),
                 swiftCodeEntity.getSwiftCode()
         );
-    }
-
-    @Test
-    public void shouldReturnSwiftCodeWithOutHqResponse() {
-        // GIVEN
-        String swiftCode = "KDPWPLPAASD";
-        GetSwiftCodeBySwiftCodeResponse expectedResponse = createExpectedResponse(branchWithOutHq, null);
-
-        // WHEN
-        when(swiftCodeRepository.findBySwiftCode(swiftCode)).thenReturn(Optional.of(branchWithOutHq));
-
-        // THEN
-        var response = getSwiftCodeBySwiftCodeService.getGetSwiftCodeBySwiftCodeResponse(swiftCode);
-        verify(swiftCodeRepository).findBySwiftCode(swiftCode);
-        assertEquals(expectedResponse, response);
-    }
-
-    @Test
-    public void shouldReturnSwiftCodeWithHqResponse() {
-        // GIVEN
-        String swiftCode = "KDPWPLPAASD";
-        List<BranchResponse> branchResponses = branches.stream().map(this::mapToBranch).toList();
-        GetSwiftCodeBySwiftCodeResponse expectedResponse = createExpectedResponse(branchWithHq, branchResponses);
-
-        // WHEN
-        when(swiftCodeRepository.findBySwiftCode(swiftCode)).thenReturn(Optional.of(branchWithHq));
-        String swiftCodeWithoutSuffix = removeSuffixIfNecessary(swiftCode);
-        when(swiftCodeRepository.findAllBranchesBySwiftCode(swiftCodeWithoutSuffix)).thenReturn(branches);
-
-        // THEN
-        var response = getSwiftCodeBySwiftCodeService.getGetSwiftCodeBySwiftCodeResponse(swiftCode);
-
-        verify(swiftCodeRepository).findBySwiftCode(swiftCode);
-        verify(swiftCodeRepository).findAllBranchesBySwiftCode(swiftCodeWithoutSuffix);
-        assertEquals(expectedResponse, response);
     }
 }

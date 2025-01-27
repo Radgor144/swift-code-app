@@ -36,7 +36,7 @@ public class GetSwiftCodeBySwiftCodeService {
         }
     }
 
-    static String removeSuffixIfNecessary(String swiftCode) {
+    private static String removeSuffixIfNecessary(String swiftCode) {
         if (swiftCode.endsWith("XXX")) {
             return swiftCode.substring(0, swiftCode.length() - 3).trim();
         }
