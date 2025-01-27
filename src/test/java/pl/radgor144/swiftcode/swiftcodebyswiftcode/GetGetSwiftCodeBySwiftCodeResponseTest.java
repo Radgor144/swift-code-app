@@ -5,9 +5,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import pl.radgor144.persistence.SwiftCodeEntity;
 import pl.radgor144.persistence.SwiftCodeRepository;
 
@@ -34,11 +31,12 @@ public class GetGetSwiftCodeBySwiftCodeResponseTest {
         String swiftCode = "KDPWPLPAASD";
         GetSwiftCodeBySwiftCodeResponse expectedResponse = createExpectedResponse(branchWithoutHq, null);
 
-        // WHEN
         when(swiftCodeRepository.findBySwiftCode(swiftCode)).thenReturn(Optional.of(branchWithoutHq));
 
-        // THEN
+        // WHEN
         var response = getSwiftCodeBySwiftCodeService.getGetSwiftCodeBySwiftCodeResponse(swiftCode);
+
+        // THEN
         verify(swiftCodeRepository).findBySwiftCode(swiftCode);
         assertEquals(expectedResponse, response);
     }
@@ -51,13 +49,13 @@ public class GetGetSwiftCodeBySwiftCodeResponseTest {
         List<BranchResponse> branchResponses = branches.stream().map(this::mapToBranch).toList();
         GetSwiftCodeBySwiftCodeResponse expectedResponse = createExpectedResponse(branchWithHq, branchResponses);
 
-        // WHEN
         when(swiftCodeRepository.findBySwiftCode(swiftCode)).thenReturn(Optional.of(branchWithHq));
         when(swiftCodeRepository.findAllBranchesBySwiftCode(swiftCodeWithoutSuffix)).thenReturn(branches);
 
-        // THEN
+        // WHEN
         var response = getSwiftCodeBySwiftCodeService.getGetSwiftCodeBySwiftCodeResponse(swiftCode);
 
+        // THEN
         verify(swiftCodeRepository).findBySwiftCode(swiftCode);
         verify(swiftCodeRepository).findAllBranchesBySwiftCode(swiftCodeWithoutSuffix);
         assertEquals(expectedResponse, response);

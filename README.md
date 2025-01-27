@@ -35,6 +35,18 @@ The application processes data from a provided file, parses it, and stores it in
 
 ## How to run locally <a name = "How to run locally"></a>
 
+1. **Build the Project**  
+   Use Maven to build the project and generate the necessary JAR file:
+   ```bash
+   mvn clean package
+   
+2. **Run with Docker**  
+   The project is already set up to run with Docker. To start the application along with the PostgreSQL database, run:
+    ```bash
+   docker-compose up --build
+   
+3. **Access the Application**  
+   After starting all services, the application is ready to use.
 
 ## Technologies <a name = "Technologies"></a>
 
