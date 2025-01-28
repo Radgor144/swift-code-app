@@ -18,6 +18,7 @@ import pl.radgor144.swiftcode.createswiftcode.CreateSwiftCodeRequest;
 import pl.radgor144.swiftcode.createswiftcode.CreateSwiftCodeResponse;
 import pl.radgor144.swiftcode.createswiftcode.UuidGenerator;
 import pl.radgor144.swiftcode.deleteswiftcode.DeleteBySwiftCodeResponse;
+import pl.radgor144.utils.RequestUtil;
 
 import java.util.UUID;
 
