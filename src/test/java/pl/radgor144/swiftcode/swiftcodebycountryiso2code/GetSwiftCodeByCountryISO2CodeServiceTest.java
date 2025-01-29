@@ -25,7 +25,7 @@ public class GetSwiftCodeByCountryISO2CodeServiceTest {
     private GetSwiftCodeByCountryISO2CodeService getSwiftCodeByCountryISO2CodeService;
 
     @ParameterizedTest
-    @MethodSource("pl.radgor144.fixtures.SwiftCodeEntityFixture#provideSwiftCodeBy")
+    @MethodSource("pl.radgor144.fixtures.SwiftCodeEntityFixture#provideSwiftCodeEntitiesForCountries")
     void shouldReturnGetSwiftCodeByCountryISO2CodeResponse(String countryISO2, String countryName, List<SwiftCodeEntity> swiftCodeEntities) {
         //GIVEN
         final List<SwiftCodeResponse> swiftCodeResponses = swiftCodeEntities.stream()

@@ -21,7 +21,7 @@ public class SwiftCodeEntityFixture {
                 .build();
     }
 
-    public static Stream<Arguments> provideSwiftCodeBy() {
+    public static Stream<Arguments> provideSwiftCodeEntitiesForCountries() {
         return Stream.of(
                 // POLAND
                 Arguments.of(
