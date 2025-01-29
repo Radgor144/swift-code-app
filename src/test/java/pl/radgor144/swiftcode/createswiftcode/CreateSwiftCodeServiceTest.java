@@ -57,7 +57,7 @@ public class CreateSwiftCodeServiceTest {
         when(swiftCodeRepository.save(any(SwiftCodeEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         //WHEN
-        var result = createSwiftCodeService.createSwiftCode(createSwiftCodeRequest);
+        CreateSwiftCodeResponse result = createSwiftCodeService.createSwiftCode(createSwiftCodeRequest);
 
         //THEN
         assertNotNull(result);

@@ -35,7 +35,7 @@ public class GetGetSwiftCodeBySwiftCodeResponseTest {
         when(swiftCodeRepository.findBySwiftCode(swiftCode)).thenReturn(Optional.of(branchWithoutHq));
 
         // WHEN
-        var response = getSwiftCodeBySwiftCodeService.getGetSwiftCodeBySwiftCodeResponse(swiftCode);
+        GetSwiftCodeBySwiftCodeResponse response = getSwiftCodeBySwiftCodeService.getGetSwiftCodeBySwiftCodeResponse(swiftCode);
 
         // THEN
         verify(swiftCodeRepository).findBySwiftCode(swiftCode);
@@ -54,7 +54,7 @@ public class GetGetSwiftCodeBySwiftCodeResponseTest {
         when(swiftCodeRepository.findAllBranchesBySwiftCode(swiftCodeWithoutSuffix)).thenReturn(branches);
 
         // WHEN
-        var response = getSwiftCodeBySwiftCodeService.getGetSwiftCodeBySwiftCodeResponse(swiftCode);
+        GetSwiftCodeBySwiftCodeResponse response = getSwiftCodeBySwiftCodeService.getGetSwiftCodeBySwiftCodeResponse(swiftCode);
 
         // THEN
         verify(swiftCodeRepository).findBySwiftCode(swiftCode);
