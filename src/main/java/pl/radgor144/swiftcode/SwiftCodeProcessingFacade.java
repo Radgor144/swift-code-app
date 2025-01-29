@@ -13,7 +13,7 @@ import pl.radgor144.swiftcode.swiftcodebycountryiso2code.GetSwiftCodeByCountryIS
 import pl.radgor144.swiftcode.swiftcodebyswiftcode.GetSwiftCodeBySwiftCodeResponse;
 import pl.radgor144.swiftcode.swiftcodebyswiftcode.GetSwiftCodeBySwiftCodeService;
 
-import static pl.radgor144.config.WeatherClientCacheConfig.CACHENAME;
+import static pl.radgor144.config.SwiftCodeCacheConfig.CACHENAME;
 
 @Service
 @RequiredArgsConstructor

@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -59,6 +60,23 @@ public class GetGetSwiftCodeBySwiftCodeResponseTest {
         verify(swiftCodeRepository).findBySwiftCode(swiftCode);
         verify(swiftCodeRepository).findAllBranchesBySwiftCode(swiftCodeWithoutSuffix);
         assertEquals(expectedResponse, response);
+    }
+
+    @Test
+    public void shouldThrowSwiftCodeNotFoundException() {
+        // GIVEN
+        String swiftCode = "KDPWPLPAASD";
+        String expectedMessage = "Not found swiftCode " + swiftCode;
+
+        when(swiftCodeRepository.findBySwiftCode(swiftCode)).thenReturn(Optional.empty());
+
+        // WHEN & THEN
+        SwiftCodeNotFoundException exception = assertThrows(SwiftCodeNotFoundException.class,
+                () -> getSwiftCodeBySwiftCodeService.getGetSwiftCodeBySwiftCodeResponse(swiftCode)
+        );
+
+        verify(swiftCodeRepository).findBySwiftCode(swiftCode);
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     private static final SwiftCodeEntity branchWithoutHq = new SwiftCodeEntity(
