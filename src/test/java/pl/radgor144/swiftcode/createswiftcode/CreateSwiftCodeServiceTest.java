@@ -76,11 +76,12 @@ public class CreateSwiftCodeServiceTest {
         //GIVEN
         when(swiftCodeRepository.existsBySwiftCode(SWIFT_CODE)).thenReturn(true);
 
-        //GIVEN & THEN
+        //WHEN
         SwiftCodeExistException exception = assertThrows(SwiftCodeExistException.class, () ->
                 createSwiftCodeService.createSwiftCode(createSwiftCodeRequest)
         );
 
+        //THEN
         assertEquals("SwiftCode " + SWIFT_CODE + " already exist!", exception.getMessage());
         verify(swiftCodeRepository, times(1)).existsBySwiftCode(SWIFT_CODE);
         verifyNoMoreInteractions(swiftCodeRepository);
